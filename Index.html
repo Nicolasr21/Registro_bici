@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Bicicletas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .salida {
+      background-color: #28a745;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Sistema de Registro y Control Bici Parqueadero UPN</h1>
+
+  <input type="text" id="documento" placeholder="Número de documento de identidad">
+
+  <input type="text" id="nombre" placeholder="Nombre del estudiante">
+  <input type="text" id="codigo" placeholder="Código estudiantil">
+  <input type="text" id="bicicleta" placeholder="Descripción de la bicicleta">
+
+  <button onclick="registrarIngreso()">Registrar Ingreso</button>
+
+  <table id="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Documento</th>
+        <th>Bicicleta</th>
+        <th>Fecha y Hora Ingreso</th>
+        <th>Fecha y Hora Salida</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+  function obtenerFechaHora() {
+    const ahora = new Date();
+    return ahora.toLocaleString();
+  }
+
+  function registrarIngreso() {
+    const nombre = document.getElementById("nombre").value;
+    const codigo = document.getElementById("codigo").value;
+    const documento = document.getElementById("documento").value;
+    const bicicleta = document.getElementById("bicicleta").value;
+
+    if (!nombre || !codigo || !documento || !bicicleta) {
+      alert("Todos los campos son obligatorios");
+      return;
+    }
+
+    const tabla = document.getElementById("tabla").getElementsByTagName('tbody')[0];
+    const fila = tabla.insertRow();
+
+    fila.insertCell(0).innerText = nombre;
+    fila.insertCell(1).innerText = codigo;
+    fila.insertCell(2).innerText = documento;
+    fila.insertCell(3).innerText = bicicleta;
+    fila.insertCell(4).innerText = obtenerFechaHora();
+    fila.insertCell(5).innerText = "-";
+
+    // Crear celda de acción correctamente (índice 6)
+    const celdaAccion = fila.insertCell(6);
+
+    const botonSalida = document.createElement("button");
+    botonSalida.innerText = "Registrar Salida";
+    botonSalida.classList.add("salida");
+
+    botonSalida.onclick = function() {
+      fila.cells[5].innerText = obtenerFechaHora();
+      botonSalida.disabled = true;
+    };
+
+    celdaAccion.appendChild(botonSalida);
+
+    limpiarCampos();
+  }
+
+  function limpiarCampos() {
+    document.getElementById("nombre").value = "";
+    document.getElementById("codigo").value = "";
+    document.getElementById("documento").value = "";
+    document.getElementById("bicicleta").value = "";
+  }
+</script>
+
+</body>
+</html>
